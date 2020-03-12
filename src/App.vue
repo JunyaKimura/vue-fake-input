@@ -1,25 +1,21 @@
 <template>
   <div id="app">
-    <vue-fake-input
-      :length="5"
-      :fontSize="40"
-      v-model="fkValue"
-    />
+    <vue-fake-input :length="30" :fontSize="40" v-model="fkValue" />
     <h2>Value: {{fkValue}}</h2>
   </div>
 </template>
 
 <script>
-import VueFakeInput from './components/VueFakeInput.vue';
+import VueFakeInput from "./components/VueFakeInput.vue";
 
 export default {
-  name: 'app',
+  name: "app",
   components: {
-    VueFakeInput,
+    VueFakeInput
   },
   data() {
     return {
-      fkValue: '',
+      fkValue: ""
     };
   }
 };

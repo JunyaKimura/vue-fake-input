@@ -12,7 +12,7 @@
         width: fkWidth,
       }"
       v-model="inputValues[index]"
-      @keyup="handleInputFocus(index)"
+      @keydown="onKeydown(index, $event.keyCode)"
       @paste.prevent="handlePastedValues"
       @input="returnFullString()"
       contenteditable="true"
@@ -24,38 +24,38 @@
 
 <script>
 export default {
-  name: 'vue-fake-input',
+  name: "vue-fake-input",
 
   props: {
     length: {
       type: Number,
-      required: true,
+      required: true
     },
     fontSize: {
       type: Number,
       default: 22,
-      required: false,
+      required: false
     },
     inputColor: {
       type: String,
-      default: '#42b983',
-      required: false,
+      default: "#42b983",
+      required: false
     },
     fontColor: {
       type: String,
-      default: '#444444',
-      required: false,
+      default: "#444444",
+      required: false
     },
     allowPaste: {
       type: Boolean,
       default: true,
-      required: false,
-    },
+      required: false
+    }
   },
 
   data() {
     return {
-      inputValues: [],
+      inputValues: []
     };
   },
 
@@ -68,7 +68,7 @@ export default {
       const width = this.fontSize + 8;
 
       return `${width}px`;
-    },
+    }
   },
 
   methods: {
@@ -77,16 +77,28 @@ export default {
     },
 
     fkInputColor(index) {
-      const color = this.inputValues[index] ? this.inputColor : '#eeeeee';
+      const color = this.inputValues[index] ? this.inputColor : "#eeeeee";
 
       return `3px solid ${color}`;
     },
 
+    onKeydown(index, keyCode) {
+      if (keyCode === 229) return;
+      this.handleInputFocus(index);
+    },
+
     handleInputFocus(index) {
-      if (this.inputValues[index] && this.inputValues[index] !== '' && index < this.length - 1) {
+      if (
+        this.inputValues[index] &&
+        this.inputValues[index] !== "" &&
+        index < this.length - 1
+      ) {
         const [nextInput] = this.$refs[`fk_${index + 2}`];
         nextInput.focus();
-      } else if (index > 0 && (!this.inputValues[index] || this.inputValues[index] === '')) {
+      } else if (
+        index > 0 &&
+        (!this.inputValues[index] || this.inputValues[index] === "")
+      ) {
         const [previusInput] = this.$refs[`fk_${index}`];
         previusInput.focus();
       }
@@ -94,8 +106,8 @@ export default {
 
     handlePastedValues(event) {
       if (this.allowPaste) {
-        const pastedValue = event.clipboardData.getData('text/plain');
-        const splitValues = pastedValue.split('');
+        const pastedValue = event.clipboardData.getData("text/plain");
+        const splitValues = pastedValue.split("");
         const _this = this;
 
         for (let i = 0; i < this.length; i++) {
@@ -112,24 +124,27 @@ export default {
     },
 
     returnFullString() {
-      this.$emit('input', this.inputValues.join(''));
-    },
-  },
+      this.$emit("input", this.inputValues.join(""));
+    }
+  }
 };
 </script>
 
 <style lang="scss" scoped>
-  .fk-input-container {
-    display: inline-block;
+.fk-input-container {
+  display: inline-block;
 
-    input {
-      border: none;
-      margin-left: 10px;
-      text-align: center;
+  input {
+    border: none;
+    margin-left: 10px;
+    text-align: center;
 
-      &:first-child { margin-left: 0; }
-      &:focus { outline: none; }
+    &:first-child {
+      margin-left: 0;
     }
-
+    &:focus {
+      outline: none;
+    }
   }
+}
 </style>
